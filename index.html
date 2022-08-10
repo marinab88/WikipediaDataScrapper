@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Wikipedia Data Scrapper</title>
+</head>
+<body>
+
+  <div id="container">
+
+  </div>
+
+  <script>
+    const URL = 'https://en.wikipedia.org/wiki/List_of_programming_languages';
+
+    const container = document.getElementById('container');
+
+    // using AJAX to communicate with wiki server in background
+    function loadPage() {
+
+      // 1. prep the connection object
+      let xhr = new XMLHttpRequest();
+
+      // 2. setup
+      xhr.open('GET', URL);
+
+      // 2.a  callback
+      xhr.onload = () => {
+        let html = xhr.responseText;
+        let parser = new DOMParser();
+        let htmlDoc = parser.parseFromString(html, 'text/html'); // DOM structure
+
+        //Traverse the DOM Structure
+        // & scrape
+
+        let languages = [];
+
+        let divs = htmlDoc.querySelectorAll('.div-col');
+        let div = divs[9];
+        let lis = div.firstElementChild.children;
+        // console.log(htmlDoc);
+
+        for (let i = 0; i < lis.length; i++) {
+          languages.push(lis[i].firstElementChild.innerText);
+        }
+        console.log(languages);
+
+        // HW: render the gathered info into a HTML table
+        //     using DOM OOP aproach
+        let table = '<table>';
+       
+        for (let i = 0; i < languages.length; i++) {
+          table += `<tr><td>${languages[i]}</td></tr>`;
+        }
+        table += '</table>';
+        container.innerHTML = table;
+      }
+
+      // 3. send the request
+      xhr.send();
+    }
+
+    loadPage();
+    
+  </script>
+</body>
+
+</html>
+
+
+<!-- 
+  Web Scrapper
+    * AJAX
+    * DOM
+    * Array
+    * OOP
+
+------ BROWSER ------        HTTP
+|                    |
+    app (js/front) ------ > Request ----- > SERVER (wiki)
+                   < ------ Response ---- <
+                     |       (text)
+                     V
+                  dom parser
+                     |
+                     V
+                  dom structure
+                     |
+                     V
+                    data
+|                    |
+----------------------
+
+-->
