@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <title>Wikipedia Data Scrapper</title>
@@ -48,13 +47,18 @@
 
         // HW: render the gathered info into a HTML table
         //     using DOM OOP aproach
-        let table = '<table>';
-       
+        let table = document.createElement('table');
+        container.append(table);
+
         for (let i = 0; i < languages.length; i++) {
-          table += `<tr><td>${languages[i]}</td></tr>`;
+      
+          let tr = document.createElement('tr');
+          table.appendChild(tr);
+          let td = document.createElement('td');
+          tr.appendChild(td);
+          td.innerHTML += languages[i]; 
+
         }
-        table += '</table>';
-        container.innerHTML = table;
       }
 
       // 3. send the request
